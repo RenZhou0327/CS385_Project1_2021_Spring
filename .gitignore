@@ -2,3 +2,6 @@ DataSet
 Classify/ResultData/
 .idea
 **/__pycache__*
+.vscode
+**/Images
+**/Models

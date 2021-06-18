@@ -1,5 +1,4 @@
 import pickle
-
 import numpy as np
 from tqdm import tqdm
 from matplotlib import pyplot as plt
@@ -39,6 +38,28 @@ def load_sample_data():
         train_dataset,
         batch_size=128,
         shuffle=True,
+    )
+    test_loader = DataLoader(
+        test_dataset,
+        batch_size=128,
+        shuffle=False
+    )
+    return train_loader, test_loader
+
+
+def load_color_data():
+    transform = transforms.Compose([
+        transforms.ToPILImage(),
+        # transforms.Grayscale(num_output_channels=1),
+        transforms.ToTensor(),
+        # transforms.Normalize(mean=(0.2), std=(0.5))
+    ])
+    train_dataset = ImageDataSet("../DataSet/SampleTrainData", transform)
+    test_dataset = ImageDataSet("../DataSet/SampleTestData", transform)
+    train_loader = DataLoader(
+        train_dataset,
+        batch_size=128,
+        shuffle=False,
     )
     test_loader = DataLoader(
         test_dataset,
