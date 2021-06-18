@@ -1,5 +1,6 @@
 DataSet
-Classify/ResultData/
+Classify/ResultData/*
+!Classify/ResultData/**.py
 .idea
 **/__pycache__*
 .vscode

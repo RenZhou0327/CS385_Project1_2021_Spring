@@ -1,0 +1,142 @@
+from matplotlib import pyplot as plt
+import pickle
+import numpy as np
+
+
+def get_data(path):
+
+    f = open(path, "rb")
+    data = pickle.load(f)
+    f.close()
+
+    train_acc, train_loss, test_acc, test_loss = data
+    train_loss = np.array(train_loss)
+    train_acc = np.array(train_acc) * 100
+    test_loss = np.array(test_loss)
+    test_acc = np.array(test_acc) * 100
+
+    train_acc = train_acc.mean(axis=1)
+    train_loss = train_loss.mean(axis=1)
+    test_acc = test_acc.mean(axis=1)
+    test_loss = test_loss.mean(axis=1)
+
+    return train_loss, train_acc, test_loss, test_acc
+
+
+# train_loss1, train_acc1, test_loss1, test_acc1 = get_data("LR_01.bin")
+# train_loss2, train_acc2, test_loss2, test_acc2 = get_data("LR_001.bin")
+# train_loss3, train_acc3, test_loss3, test_acc3 = get_data("LR_0001.bin")
+
+# fig = plt.figure(figsize=(8, 6))
+# plt.plot(list(range(1, 51)), train_acc1, linewidth=2, linestyle='-.', label="Lr 0.1 Train Acc")
+# plt.plot(list(range(1, 51)), test_acc1, linewidth=2, label="Lr 0.1 Test Acc")
+# plt.plot(list(range(1, 51)), train_acc2, linewidth=2, linestyle='-.', label="Lr 0.01 Train Acc")
+# plt.plot(list(range(1, 51)), test_acc2, linewidth=2, label="Lr 0.01 Test Acc")
+# plt.plot(list(range(1, 51)), train_acc3, linewidth=2, linestyle='-.', label="Lr 0.001 Train Acc")
+# plt.plot(list(range(1, 51)), test_acc3, linewidth=2, label="Lr 0.001 Test Acc")
+# plt.legend(fontsize=15, loc="lower right")
+# plt.xticks(fontsize=12)
+# plt.yticks(fontsize=12)
+# plt.ylabel('Acc(%)', fontsize=15)
+# plt.xlabel('Epoch', fontsize=15)
+# plt.tight_layout()
+# plt.savefig("Logistic_Lr_Acc.png")
+# plt.show()
+# exit(0)
+
+# fig = plt.figure(figsize=(8, 6))
+# plt.plot(list(range(1, 51)), train_loss1, linewidth=2, linestyle='-.', label="Lr 0.1 Train Loss")
+# plt.plot(list(range(1, 51)), test_loss1, linewidth=2, label="Lr 0.1 Test Loss")
+# plt.plot(list(range(1, 51)), train_loss2, linewidth=2, linestyle='-.', label="Lr 0.01 Train Loss")
+# plt.plot(list(range(1, 51)), test_loss2, linewidth=2, label="Lr 0.01 Test Loss")
+# plt.plot(list(range(1, 51)), train_loss3, linewidth=2, linestyle='-.', label="Lr 0.001 Train Loss")
+# plt.plot(list(range(1, 51)), test_loss3, linewidth=2, label="Lr 0.001 Test Loss")
+# plt.legend(fontsize=15, loc="upper right")
+# plt.xticks(fontsize=12)
+# plt.yticks(fontsize=12)
+# plt.ylabel('Loss', fontsize=15)
+# plt.xlabel('Epoch', fontsize=15)
+# plt.tight_layout()
+# plt.savefig("Logistic_Lr_Loss.png")
+# plt.show()
+
+
+# train_loss1, train_acc1, test_loss1, test_acc1 = get_data("Ridge_lam01.bin")
+# train_loss2, train_acc2, test_loss2, test_acc2 = get_data("Ridge_lam001.bin")
+# train_loss3, train_acc3, test_loss3, test_acc3 = get_data("Ridge_lam0001.bin")
+
+# fig = plt.figure(figsize=(8, 6))
+# plt.plot(list(range(1, 51)), train_acc1, linewidth=2, linestyle='-.', label="Lam 0.1 Train Acc")
+# plt.plot(list(range(1, 51)), test_acc1, linewidth=2, label="Lr 0.1 Test Acc")
+# plt.plot(list(range(1, 51)), train_acc2, linewidth=2, linestyle='-.', label="Lam 0.01 Train Acc")
+# plt.plot(list(range(1, 51)), test_acc2, linewidth=2, label="Lr 0.01 Test Acc")
+# plt.plot(list(range(1, 51)), train_acc3, linewidth=2, linestyle='-.', label="Lam 0.001 Train Acc")
+# plt.plot(list(range(1, 51)), test_acc3, linewidth=2, label="Lr 0.001 Test Acc")
+# plt.legend(fontsize=15, loc="lower right")
+# plt.xticks(fontsize=12)
+# plt.yticks(fontsize=12)
+# plt.ylabel('Acc(%)', fontsize=15)
+# plt.xlabel('Epoch', fontsize=15)
+# plt.tight_layout()
+# plt.savefig("Ridge_Lambda_Acc.png")
+# plt.show()
+# exit(0)
+#
+# fig = plt.figure(figsize=(8, 6))
+# plt.plot(list(range(1, 51)), train_loss1, linewidth=2, linestyle='-.', label="Lam 0.1 Train Loss")
+# plt.plot(list(range(1, 51)), test_loss1, linewidth=2, label="Lr 0.1 Test Loss")
+# plt.plot(list(range(1, 51)), train_loss2, linewidth=2, linestyle='-.', label="Lam 0.01 Train Loss")
+# plt.plot(list(range(1, 51)), test_loss2, linewidth=2, label="Lr 0.01 Test Loss")
+# plt.plot(list(range(1, 51)), train_loss3, linewidth=2, linestyle='-.', label="Lam 0.001 Train Loss")
+# plt.plot(list(range(1, 51)), test_loss3, linewidth=2, label="Lr 0.001 Test Loss")
+# plt.legend(fontsize=15, loc="upper right")
+# plt.xticks(fontsize=12)
+# plt.yticks(fontsize=12)
+# plt.ylabel('Loss', fontsize=15)
+# plt.xlabel('Epoch', fontsize=15)
+# plt.tight_layout()
+# plt.savefig("Ridge_Lambda_Loss.png")
+# plt.show()
+
+
+# train_loss1, train_acc1, test_loss1, test_acc1 = get_data("Lasso_lam01.bin")
+# train_loss2, train_acc2, test_loss2, test_acc2 = get_data("Lasso_lam001.bin")
+# train_loss3, train_acc3, test_loss3, test_acc3 = get_data("Lasso_lam0001.bin")
+
+# fig = plt.figure(figsize=(8, 6))
+# plt.plot(list(range(1, 51)), train_acc1, linewidth=2, linestyle='-.', label="Lam 0.1 Train Acc")
+# plt.plot(list(range(1, 51)), test_acc1, linewidth=2, label="Lr 0.1 Test Acc")
+# plt.plot(list(range(1, 51)), train_acc2, linewidth=2, linestyle='-.', label="Lam 0.01 Train Acc")
+# plt.plot(list(range(1, 51)), test_acc2, linewidth=2, label="Lr 0.01 Test Acc")
+# plt.plot(list(range(1, 51)), train_acc3, linewidth=2, linestyle='-.', label="Lam 0.001 Train Acc")
+# plt.plot(list(range(1, 51)), test_acc3, linewidth=2, label="Lr 0.001 Test Acc")
+# plt.legend(fontsize=15, loc="lower right")
+# plt.xticks(fontsize=12)
+# plt.yticks(fontsize=12)
+# plt.ylabel('Acc(%)', fontsize=15)
+# plt.xlabel('Epoch', fontsize=15)
+# plt.tight_layout()
+# plt.savefig("Lasso_Lambda_Acc.png")
+# plt.show()
+# exit(0)
+
+# fig = plt.figure(figsize=(8, 6))
+# plt.plot(list(range(1, 51)), train_loss1, linewidth=2, linestyle='-.', label="Lam 0.1 Train Loss")
+# plt.plot(list(range(1, 51)), test_loss1, linewidth=2, label="Lr 0.1 Test Loss")
+# plt.plot(list(range(1, 51)), train_loss2, linewidth=2, linestyle='-.', label="Lam 0.01 Train Loss")
+# plt.plot(list(range(1, 51)), test_loss2, linewidth=2, label="Lr 0.01 Test Loss")
+# plt.plot(list(range(1, 51)), train_loss3, linewidth=2, linestyle='-.', label="Lam 0.001 Train Loss")
+# plt.plot(list(range(1, 51)), test_loss3, linewidth=2, label="Lr 0.001 Test Loss")
+# plt.legend(fontsize=15, loc="upper right")
+# plt.xticks(fontsize=12)
+# plt.yticks(fontsize=12)
+# plt.ylabel('Loss', fontsize=15)
+# plt.xlabel('Epoch', fontsize=15)
+# plt.tight_layout()
+# plt.savefig("Lasso_Lambda_Loss.png")
+# plt.show()
+
+f = open("Lasso_w_0001.bin", "rb")
+data = pickle.load(f)
+f.close()
+print(data.shape)
