@@ -59,7 +59,7 @@ X_train, y_train = pickle.load(f)
 X_train = X_train.detach().numpy()
 y_train = y_train.detach().numpy().astype(np.int32)
 f.close()
-# print(X_train.shape, y_train.shape)
+print(X_train.shape, y_train.shape)
 
 f = open("../DataSet/EMTestFeatures", "rb")
 X_test, y_test = pickle.load(f)

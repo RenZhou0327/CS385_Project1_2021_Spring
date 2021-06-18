@@ -17,8 +17,6 @@ class LDA:
         mu_neg = np.mean(self.x_neg, axis=0)
         var_pos = np.cov(self.x_pos.T)
         var_neg = np.cov(self.x_neg.T)
-        print(x_neg.shape)
-        exit(0)
         sw = self.ratio_pos * var_pos + self.ratio_neg * var_neg
         sw_inv = np.linalg.inv(sw)
         beta = np.matmul(sw_inv, (mu_pos - mu_neg))
@@ -31,6 +29,13 @@ class LDA:
         self.mu_neg = new_mu_neg
         self.std_pos = np.sqrt(new_var_pos)
         self.std_neg = np.sqrt(new_var_neg)
+
+        return self.save_features()
+
+    def save_features(self):
+        x_pos_proj = np.matmul(x_pos, self.beta)
+        x_neg_proj = np.matmul(x_neg, self.beta)
+        return x_pos_proj, x_neg_proj
 
     def validate(self, x_test):
         new_x_test = np.matmul(x_test, self.beta)
@@ -65,6 +70,8 @@ for features, label in zip(X_train, y_train):
 
 y_test = y_test.reshape(-1)
 models = []
+x_pos_list = []
+x_neg_list = []
 for idx, (x_pos, x_neg) in enumerate(zip(X_pos_dataset, X_neg_dataset)):
     print("model:", idx)
     # print(idx, len(x_pos), len(x_neg), len(x_pos) + len(x_neg))
@@ -73,10 +80,14 @@ for idx, (x_pos, x_neg) in enumerate(zip(X_pos_dataset, X_neg_dataset)):
     labels = (y_test == idx)
     model = LDA(x_pos, x_neg)
     models.append(model)
-    model.train()
+    x_pos_proj, x_neg_proj = model.train()
+    x_pos_list.append(x_pos_proj)
+    x_neg_list.append(x_neg_proj)
     output = model.validate(X_test)
     correct = np.count_nonzero((output == labels))
     acc = correct / labels.shape[0]
     print(correct, acc)
 
-
+f = open("ResultData/LDA_Proj.bin", "wb")
+pickle.dump((x_pos_list, x_neg_list), f)
+f.close()

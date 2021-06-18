@@ -42,9 +42,5 @@ class ImageDataSet(Dataset):
         return len(self.data)
 
 
-
-
-
-
 if __name__ == '__main__':
     svnh = HogDataSet("../DataSet/TrainData")

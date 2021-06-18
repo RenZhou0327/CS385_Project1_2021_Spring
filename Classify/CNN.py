@@ -71,12 +71,19 @@ model = MyModel(num_class=10).to(device)
 optimizer = optim.Adam(model.parameters(), lr=lr)
 # lr_schedular = optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=lambda epoch: 1 / (epoch + 1))
 
+train_loss_list = []
+train_acc_list = []
+test_loss_list = []
+test_acc_list = []
+
+
 for epoch in range(0, epochs):
     train_loss = 0
     train_correct = 0
     train_num = 0
     model.reset_features()
     y_train_labels = torch.Tensor().to(device)
+    model.train()
     for batch_idx, (images, labels) in enumerate(tqdm(train_loader, desc=f"Train epoch{epoch}")):
         optimizer.zero_grad()
         train_num += images.shape[0]
@@ -99,8 +106,11 @@ for epoch in range(0, epochs):
     y_train_labels = y_train_labels.cpu()
     print("Train Acc and Loss:")
     # print(model.get_features().cpu().shape, y_train_labels.cpu().shape)
-    print(train_correct / train_num)
+    train_acc = train_correct / train_num
+    print(train_acc)
     print(train_loss.cpu().item())
+    train_acc_list.append(train_acc)
+    train_loss_list.append(train_loss.cpu().item())
     time.sleep(0.1)
     # exit(0)
 
@@ -109,6 +119,7 @@ for epoch in range(0, epochs):
     test_num = 0
     y_test_labels = torch.Tensor().to(device)
     model.reset_features()
+    model.eval()
     for batch_idx, (images, labels) in enumerate(tqdm(test_loader, desc=f"Test epoch{epoch}")):
         test_num += images.shape[0]
         images = images.to(device)
@@ -126,21 +137,30 @@ for epoch in range(0, epochs):
     y_test_labels = y_test_labels.cpu()
     print("Test Acc and Loss:")
     # print(model.get_features().cpu().shape, y_test_labels.cpu().shape)
-    print(test_correct / test_num)
+    test_acc = test_correct / test_num
+    print(test_acc)
     print(test_loss.cpu().item())
+    test_acc_list.append(test_acc)
+    test_loss_list.append(test_loss.cpu().item())
 
     print(x_train_features.shape, y_train_labels.shape)
     print(x_test_features.shape, y_test_labels.shape)
 
     time.sleep(0.1)
 
-    f = open("../DataSet/EMTrainFeatures", "wb")
-    pickle.dump((x_train_features, y_train_labels), f)
-    f.close()
+    if (epoch + 1) % 10 == 0:
+        torch.save(model.state_dict(), f"./ResultData/cnn_model_epoch{epoch + 1}.pkl")
 
-    f = open("../DataSet/EMTestFeatures", "wb")
-    pickle.dump((x_test_features, y_test_labels), f)
-    f.close()
+    # f = open("../DataSet/EMTrainFeatures", "wb")
+    # pickle.dump((x_train_features, y_train_labels), f)
+    # f.close()
+    #
+    # f = open("../DataSet/EMTestFeatures", "wb")
+    # pickle.dump((x_test_features, y_test_labels), f)
+    # f.close()
+f = open("./ResultData/cnn_bin.pkl", "wb")
+pickle.dump((train_acc_list, train_loss_list, test_acc_list, test_loss_list), f)
+f.close()
 
 
 

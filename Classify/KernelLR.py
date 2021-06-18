@@ -1,3 +1,4 @@
+import pickle
 import time
 import numpy as np
 import torch
@@ -57,7 +58,7 @@ class KernelRegression(nn.Module):
         return 1 / (1 + torch.exp(-x))
 
     @torch.no_grad()
-    def get_rbf_kernel(self, x1, x2, sigma=0.1):
+    def get_rbf_kernel(self, x1, x2, sigma=0.01):
         x1_normal = torch.sum(x1 ** 2, dim=-1)
         x2_normal = torch.sum(x2 ** 2, dim=-1)
         k = torch.exp(-sigma * (x1_normal[:, None] + x2_normal[None, :] - 2 * torch.matmul(x1, x2.t())))
@@ -68,7 +69,7 @@ class KernelRegression(nn.Module):
 
 
 lr = 0.01
-epochs = 100
+epochs = 50
 device = torch.device("cpu")
 # device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 criterion = MSELoss().to(device)
@@ -98,6 +99,9 @@ X_test = X_test.to(device)
 batch_size = 128
 batches = (y_train.shape[0] - 1) // batch_size + 1
 test_batches = (y_test.shape[0] - 1) // batch_size + 1
+
+train_ones_list = [0] * epochs
+test_ones_list = [0] * epochs
 
 # models = []
 for model_idx in range(0, 10):
@@ -134,15 +138,12 @@ for model_idx in range(0, 10):
             one_cnt += torch.sum(bin_labels[low_idx: high_idx])
             res_cnt += torch.sum(predict)
 
-        if (epoch + 1) % 10 == 0:
-            model.update_lr(lr / 2)
-            # lr /= 1.5
-
         print("Train Acc and Loss:")
         print(train_correct / train_num)
         print(train_loss)
         # print(correct_list)
         print(one_cnt.item(), res_cnt.item())
+        train_ones_list[epoch] += res_cnt.item()
 
         test_loss = 0
         test_correct = 0
@@ -170,4 +171,14 @@ for model_idx in range(0, 10):
         print(test_loss)
         # print(test_correct_list)
         print(test_one_cnt.item(), test_res_cnt.item())
+        test_ones_list[epoch] += test_res_cnt.item()
     # exit(0)
+
+train_ones_list = np.array(train_ones_list) / 10
+test_ones_list = np.array(test_ones_list) / 10
+print(train_ones_list)
+print(test_ones_list)
+
+f = open("ResultData/Kernel_ones001.bin", "wb")
+pickle.dump((train_ones_list, test_ones_list), f)
+f.close()
