@@ -6,7 +6,7 @@
     - Logistic
     - Logistic + Ridge Loss
     - Logistic + Lasso Loss
-    - RBF Kernel + Logistic (感觉貌似有点问题)
+    - RBF Kernel + Logistic
     - LDA
     - SVM
     - EM (GMM)
