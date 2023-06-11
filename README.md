@@ -1,4 +1,4 @@
-# CS385_Project1_2021_Spring
+# Implementation of Some Basic ML algorithms - CS385_2021_Spring
 
 ### Teacher 张拳石
 
